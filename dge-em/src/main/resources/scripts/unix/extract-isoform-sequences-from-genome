@@ -1,0 +1,10 @@
+#!/bin/bash
+mem=`free | grep -o -e 'Mem:\s*[0-9]*' | grep -o -E '[0-9]+'`
+mem=$((mem/2048))
+if [ -n $mem ]
+then
+        maxMem=-Xmx${mem}M
+        startMem=-Xms${mem}M
+fi
+
+java $startMem $maxMem -cp "$INSTALL_PATH/lib/$jarname" edu.uconn.engr.dna.format.GenerateKnownGeneSequences $@

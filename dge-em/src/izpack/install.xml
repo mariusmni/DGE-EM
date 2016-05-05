@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="iso-8859-1"  ?>
+<!--DOCTYPE installation PUBLIC "" "/src/izpack/dtd/installation.dtd"-->
+
+<!-- 
+	@author  Klaus Bartz
+-->
+
+<installation version="1.0">
+
+    <!-- 
+        The info section.
+        The meaning of the tags should be natural ...
+    -->
+    <info>
+        <appname>DGE-EM</appname>
+        <appversion>1.0</appversion>
+        <authors>
+            <author name="Marius Nicolae" email="man09004@engr.uconn.edu"/>
+            <author name="Ion Mandoiu" email="ion@engr.uconn.edu"/>
+        </authors>
+        <url>http://dna.engr.uconn.edu/software/DGE-EM</url>
+		<run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
+		<uninstaller write="no"/>
+		<writeinstallationinformation>no</writeinstallationinformation>
+    </info>
+
+    <!-- 
+        The gui preferences indication.
+        Sets the installer window to 640x480. It will not be able to change the size.
+    -->
+    <guiprefs width="640" height="480" resizable="no"/>
+
+    <!-- 
+        The locale section.
+        Asks here to include the English and German langpacks.
+    -->
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+
+    <!-- 
+        The panels section.
+        We indicate here which panels we want to use. The order will be respected.
+    -->
+    <panels>
+        <panel classname="HelloPanel"/>
+        <panel classname="TargetPanel" />
+        <panel classname="InstallPanel"/>
+    </panels>
+
+	<variables>
+		<variable name="jarname" value="dge-em-1.0.jar"/>
+		<variable name="srcname" value="dge-em-sources.jar"/>
+	</variables>
+
+   
+    <!-- 
+        The packs section.
+        We specify here our packs.
+    -->
+    <packs>
+        <pack name="Core" required="yes"  preselected="yes">
+            <description>Core files</description>
+            <file src="README.TXT" targetdir="$INSTALL_PATH" />
+            <file src="LICENSE.TXT" targetdir="$INSTALL_PATH" />
+            <file src="NOTICE.TXT" targetdir="$INSTALL_PATH" />
+            <file src="${jarname}" targetdir="$INSTALL_PATH/lib" />     
+            <fileset dir="dependency" targetdir="$INSTALL_PATH/lib">
+                <include name="*.jar" />
+            </fileset>
+        </pack>
+        <pack name="Source" required="no"  preselected="yes">
+            <description>Source code for DGE-EM</description>
+            <file src="${srcname}" targetdir="$INSTALL_PATH/src/"/>
+        </pack>
+        <pack name="ScriptsUnix" required="yes"  preselected="yes" os="unix">
+            <description>Unix Scripts</description>
+            <fileset dir="scripts/unix/" targetdir="$INSTALL_PATH" />
+
+			<parsable targetfile="$INSTALL_PATH/dge-em" />
+			<parsable targetfile="$INSTALL_PATH/extract-isoform-sequences-from-genome" />
+
+			<executable targetfile="$INSTALL_PATH/dge-em" stage="never" />
+			<executable targetfile="$INSTALL_PATH/extract-isoform-sequences-from-genome" stage="never" />
+        </pack>
+		<pack name="ScriptsWin" required="yes"  preselected="yes" os="windows">
+            <description>Windows Script Files</description>
+            <fileset dir="scripts/win/" targetdir="$INSTALL_PATH" />
+
+			<parsable targetfile="$INSTALL_PATH/dge-em.bat" />
+        </pack>
+    </packs>
+</installation>
