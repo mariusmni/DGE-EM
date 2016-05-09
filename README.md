@@ -25,15 +25,19 @@ jar files. To run dge-em regardless of the working directory, proceed with the i
 
 1.   Assuming you have the installer, call it installer.jar:
 
-1.1 With graphical interface: on most platforms double clicking on the icon will start the installer, otherwise  type
+With graphical interface: on most platforms double clicking on the icon will start the installer, otherwise  type
 
-      ```java -jar installer.jar```
+```
+java -jar installer.jar
+```
 
  at the command line
 
-1.2 Text mode: if no graphical user interface is available, type
+Text mode: if no graphical user interface is available, type
 
-     ```java -jar installer.jar -console```
+```
+java -jar installer.jar -console
+```
 
 at the command line and follow the instructions
 
@@ -62,6 +66,7 @@ you can change the 'dge' prefix by using the -o option (see below).
 
 You can run DGE-Em from the command line as follows:
 
+```
   dge-em [options]* file.fastq [file2.fastq ...]
 
 Option (* = required)               Description                                
@@ -85,7 +90,7 @@ Option (* = required)               Description
                                       the enzyme is not included in the tags   
 --uniq                              Infer frequencies only from tags that map  
                                       to the same gene                         
-
+```
 
 ### Example:
   
@@ -94,17 +99,20 @@ Option (* = required)               Description
   
   First, change directory to dge-em:
 
-  ```cd dge-em```
+```
+cd dge-em
+```
 
   Then run:
 
-  ```
-  sh dge-em.sh -G example/test.fa.GTF -m example/test.fa -e CATG -p example/tag1.fastq example/tag2.fastq
-  ```
+```
+sh dge-em.sh -G example/test.fa.GTF -m example/test.fa -e CATG -p example/tag1.fastq example/tag2.fastq
+```
   This will produce two output files dge.iso_estimates and dge.gene_estimates.
 
 ## Revision history
 Version 1.0.1 (5/09/16)  - updated to work with Scala 2.11.8
+
 Version 1.0.0 (2/22/11)  - first public release
 
 
