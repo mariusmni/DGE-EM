@@ -4,7 +4,6 @@ mem=$((mem/2048))
 if [ -n $mem ]
 then
         maxMem=-Xmx${mem}M
-        startMem=-Xms${mem}M
 fi
 
-java $startMem $maxMem -cp "$INSTALL_PATH/lib/$jarname" edu.uconn.engr.dna.format.GenerateKnownGeneSequences $@
+java $maxMem -cp "$INSTALL_PATH/lib/$jarname" edu.uconn.engr.dna.format.GenerateKnownGeneSequences $@

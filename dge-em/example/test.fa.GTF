@@ -1,0 +1,2 @@
+Mouse_Actin	fastaToGT	exon	1	364	0.00	 +	.	gene_id "Mouse_Actin"; transcript_id "Mouse_Actin";
+Mouse_GAPDH	fastaToGT	exon	1	660	0.00	 +	.	gene_id "Mouse_GAPDH"; transcript_id "Mouse_GAPDH";

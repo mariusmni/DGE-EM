@@ -15,7 +15,7 @@
         <appname>DGE-EM</appname>
         <appversion>1.0</appversion>
         <authors>
-            <author name="Marius Nicolae" email="man09004@engr.uconn.edu"/>
+            <author name="Marius Nicolae" email="marius.nicolae@engr.uconn.edu"/>
             <author name="Ion Mandoiu" email="ion@engr.uconn.edu"/>
         </authors>
         <url>http://dna.engr.uconn.edu/software/DGE-EM</url>
@@ -61,7 +61,7 @@
     <packs>
         <pack name="Core" required="yes"  preselected="yes">
             <description>Core files</description>
-            <file src="README.TXT" targetdir="$INSTALL_PATH" />
+            <file src="README.md" targetdir="$INSTALL_PATH" />
             <file src="LICENSE.TXT" targetdir="$INSTALL_PATH" />
             <file src="NOTICE.TXT" targetdir="$INSTALL_PATH" />
             <file src="${jarname}" targetdir="$INSTALL_PATH/lib" />     
