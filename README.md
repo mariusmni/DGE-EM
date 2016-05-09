@@ -1,5 +1,5 @@
 
-# DGE-EM README
+# DGE-EM 
 
 DGE-EM source code originally found at http://dna.engr.uconn.edu/?page_id=163
 The code has been updated to work with the latest version of Scala.
@@ -13,8 +13,7 @@ Install Maven then go to the root directory of this project and type:
 mvn install
 ```
 
-This will produce the artifact dge-em/target/dge-em-1.0-standard.jar which is an installer for dge-em.
-Note: the installer for the original version can be found at http://dna.engr.uconn.edu/software/DGE-EM/dge-em-1.0.0-install.jar
+This will produce the artifact `dge-em/target/dge-em-1.0-standard.jar` which is an installer for DGE-EM.
 
 ## Installation:
 
