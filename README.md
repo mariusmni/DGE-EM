@@ -23,23 +23,18 @@ Note: the installer for the original version can be found at http://dna.engr.uco
 the script has to be run from the dge-em folder otherwise it will not find the required 
 jar files. To run dge-em regardless of the working directory, proceed with the installation described next.
 
-1.   Assuming you have the installer, call it installer.jar:
-
-With graphical interface: on most platforms double clicking on the icon will start the installer, otherwise  type
+1.   Assuming you have the installer, call it installer.jar.  With graphical interface: on most platforms 
+double clicking on the icon will start the installer, otherwise  type the following at the command line:
 
 ```
 java -jar installer.jar
 ```
 
- at the command line
-
-Text mode: if no graphical user interface is available, type
+Text mode: if no graphical user interface is available, type the following at the command line and follow the instructions:
 
 ```
 java -jar installer.jar -console
 ```
-
-at the command line and follow the instructions
 
 2. [Optional] On Windows you might want to add the DGE-EM
    installation directory to the path, such that you can invoke 
