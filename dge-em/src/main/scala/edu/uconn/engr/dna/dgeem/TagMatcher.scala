@@ -24,7 +24,7 @@ import edu.uconn.engr.dna.util.Utils
 import edu.uconn.engr.dna.util.F
 import collection.{mutable => cm}
 import java.{util => ju}
-import scala.collection.{JavaConversions => jc}
+import scala.collection.JavaConverters._
 import scala.collection.mutable.Builder
 
 class TagMatcher(isoformSequences: TaggedSequences, 
@@ -82,7 +82,7 @@ class TagMatcher(isoformSequences: TaggedSequences,
 		println("Total sites " + (sites.foldLeft(0)((s, l) => s + l._2.size)))
 		nrCleaveSites = sites.map(p => (p._1, p._2 .size))
 
-		tagClassesForSites(tagLen, jc.asScalaMap(sitesForIsoform))
+		tagClassesForSites(tagLen, sitesForIsoform.asScala)
 	};
 
 

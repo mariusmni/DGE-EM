@@ -4,7 +4,7 @@ import edu.cornell.lassp.houle.RngPack.Ranlux
 import edu.uconn.engr.dna.format.Isoforms
 import collection.breakOut
 import java.{util => ju, lang => jl}
-import collection.{JavaConversions => jc}
+import collection.JavaConverters._
 
 /**
  * User: marius
@@ -33,7 +33,7 @@ class DGEEM(var p: Double, isoforms: Isoforms, nrCleavageSites: ju.Map[String, I
 		}
 		val uniqIsoforms = new Array[String](isoformsSet.size)
 		var i = 0
-		for (isoform <- jc.asScalaIterable(isoformsSet)) {
+		for (isoform <- isoformsSet.asScala) {
 			uniqIsoforms(i) = isoform
 			i+=1
 		}

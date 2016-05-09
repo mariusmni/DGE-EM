@@ -27,7 +27,7 @@ import edu.uconn.engr.dna.util.EmUtils
 import edu.uconn.engr.dna.util.IsoformCleavageSites
 import java.io.FileInputStream
 import java.io.FileReader
-import scala.collection.{JavaConversions => jc}
+import scala.collection.JavaConverters._
 
 object ComputeCleaveSites {
 
@@ -72,25 +72,25 @@ object ComputeCleaveSites {
 			val interestingClusters = interestingGenes.map(g => clusters.get(g));
 			for (g <- interestingGenes) {
 				val cluster = clusters.get(g)
-				for (i <- jc.asScalaIterable(cluster.idIterator)) {
+				for (i <- cluster.idIterator().asScala) {
 					interestingGenes.foreach(g => println(i + " " + nrCleaveSites(i)))
 				}
 			}
 			val genesMinOneIsoCut = interestingClusters.filter(c =>
-				jc.asScalaIterable(c.idIterator).exists(i => nrCleaveSites(i) > 0))
+				c.idIterator.asScala.exists(i => nrCleaveSites(i) > 0))
 
 			val genesAllIsosCut = interestingClusters.filter(c =>
-				jc.asScalaIterable(c.idIterator).forall(i => nrCleaveSites(i) > 0))
+				c.idIterator.asScala.forall(i => nrCleaveSites(i) > 0))
 			for (g <- genesAllIsosCut) {
 				println(g)
 			}
 			println(cleavePatterns + "\t" + isosCut + "\t" +
 				genesMinOneIsoCut.size + "\t" + genesAllIsosCut.size)
 		} else {
-			val genesMinOneIsoCut = jc.asScalaIterable(clusters.groupIterator).count(c =>
-				jc.asScalaIterable(c.idIterator).exists(i => nrCleaveSites(i) > 0))
-			val genesAllIsosCut = jc.asScalaIterable(clusters.groupIterator).count(c =>
-				jc.asScalaIterable(c.idIterator).forall(i => nrCleaveSites(i) > 0))
+			val genesMinOneIsoCut = clusters.groupIterator.asScala.count(c =>
+				c.idIterator.asScala.exists(i => nrCleaveSites(i) > 0))
+			val genesAllIsosCut = clusters.groupIterator.asScala.count(c =>
+				c.idIterator.asScala.forall(i => nrCleaveSites(i) > 0))
 			println(cleavePatterns + "\t" + isosCut + "\t" +
 				genesMinOneIsoCut + "\t" + genesAllIsosCut)
 		}

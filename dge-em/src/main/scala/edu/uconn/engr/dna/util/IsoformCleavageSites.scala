@@ -92,7 +92,7 @@ object IsoformCleavageSites {
 			val map = for{
 				isoformName <- isoformSequences.getAllTags;
 				s = isoformSequences.getSequence(isoformName).toString
-			} yield (isoformName.toString, cleavePatterns.toIndexedSeq[String].
+			} yield (isoformName.toString, cleavePatterns.toIndexedSeq.
 					 flatMap(pattern => getAllMatchPositions(pattern, s)).
 					 sortWith(_ > _))
 			map.toMap

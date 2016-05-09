@@ -12,7 +12,7 @@ class DGEOptionParser extends OptionParser {
   import DGEOptionParser._
   acceptsAll(asList(OP_HELP, "help"), "Show help")
   acceptsAll(asList(OP_GTF, "GTF"), "Known genes and isoforms in GTF format")
-  		.withRequiredArg.describedAs("GTF file")
+  		.withRequiredArg.describedAs("GTF file").required()
   acceptsAll(asList(OP_CLUSTERS_FILE, "gene-clusters"), 
 		  "Override isoform to gene mapping defined in the " 
 		+ "GTF file with a mapping taken from the given file. The format " 
@@ -23,12 +23,17 @@ class DGEOptionParser extends OptionParser {
 //		  "Weigh the tags based on their quality scores.")
   accepts(OP_UNIQ, "Infer frequencies only from tags that map to the same gene")
 //  accepts(OP_PROB, "Cleave probability").withRequiredArg.ofType(classOf[java.lang.Double])
-  accepts(OP_MRNA, "Isoform MRNA sequences in 5' to 3' orientation").withRequiredArg
-  accepts(OP_ENZIME, "Enzime cutting patterns (comma separated, no spaces)").withRequiredArg.describedAs("enzymes")
-  accepts(OP_PREPEND_ENZYME, "Use this flag if the recognition site for the enzyme is not included in the tags")
+  accepts(OP_MRNA, "Isoform MRNA sequences in 5' to 3' orientation").withRequiredArg.required()
+  accepts(OP_ENZIME, "Enzime cutting patterns (comma separated, no spaces) e.g. CATG").withRequiredArg.describedAs("enzymes").required()
+  acceptsAll(asList(OP_PREPEND_ENZYME, "prepend-enzyme"), "Use this flag if the recognition site for the enzyme is not included in the tags")
   accepts(OP_OUTPUT_PREFIX, "Output files prefix (default 'dge')")
   		.withRequiredArg.describedAs("prefix")
   accepts(OP_LIMIT_NTAGS, "Discard all tags after this many have been read").withRequiredArg.ofType(classOf[java.lang.Integer])
+  
+  override def printHelpOn( sink: java.io.OutputStream ) {
+    println("dge-em [options]* file.fastq [file2.fastq ...]")
+    super.printHelpOn(sink)
+  }
 }
 
 object DGEOptionParser {
@@ -41,7 +46,7 @@ object DGEOptionParser {
   final val OP_UNIQ = "uniq"
 //  final val OP_PROB = "p"
   final val OP_ENZIME = "e"
-  final val OP_PREPEND_ENZYME = "prepend-enzyme"
+  final val OP_PREPEND_ENZYME = "p"
   final val OP_LIMIT_NTAGS = "limit-ntags"
   final val OP_OUTPUT_PREFIX = "o"
 

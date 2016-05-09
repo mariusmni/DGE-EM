@@ -47,9 +47,9 @@ class WeightedTagClass(var isoforms: Array[String],
 	}
 
 	def sort {
-		val sorted = (isoforms, pos, w).zip.sortWith((a, b) => {
-					val c = a._1.compareTo(b._1)
-					c < 0 || (c == 0 && a._2 < b._2)
+		val sorted = (isoforms, pos, w).zipped.toList.sortWith((a, b) => {
+					val c = a._1.compareTo(b._1) // compare isoform names
+					c < 0 || (c == 0 && a._2 < b._2) // if equal, compare positions
 				})
 		var k = 0
 		for ((i, p, v) <- sorted) {

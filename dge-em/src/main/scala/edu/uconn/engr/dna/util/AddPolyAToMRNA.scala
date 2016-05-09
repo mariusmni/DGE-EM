@@ -2,7 +2,7 @@ package edu.uconn.engr.dna.util
 
 import edu.uconn.engr.dna.format.IsoformSequencesFromFile
 import java.io.PrintWriter
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scala.math._
 
 object AddPolyAToMRNA {
@@ -19,7 +19,7 @@ object AddPolyAToMRNA {
  		val isoformSequences = new IsoformSequencesFromFile(mRnaFile, null, false)
 		println("writing isoform sequences to " + outputFile + "...");
 		val pw = new PrintWriter(outputFile);
-		for (isoform <- asIterable(isoformSequences.getAllTags)) {
+		for (isoform <- isoformSequences.getAllTags.asScala) {
 			val isoSequence = isoformSequences.getSequence(isoform) + polyATail
 			pw.write('>')
 			pw.write(isoform.toString)

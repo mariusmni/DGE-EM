@@ -11,7 +11,7 @@ import edu.uconn.engr.dna.util._
 import java.io.{InputStreamReader, FileReader, BufferedReader, FileInputStream}
 import collection.mutable.ListBuffer
 import edu.uconn.engr.dna.util.F
-import collection.{JavaConversions => jc}
+import collection.JavaConverters._
 
 
 
@@ -53,7 +53,7 @@ object DGEStartup {
 		val cleavePatterns = options.valueOf(OP_ENZIME).toString.split(",").toList;
 		val runUniq = options.has(OP_UNIQ);
 
-		var inputFiles =  jc.asScalaIterable(options.nonOptionArguments).toList;
+		var inputFiles =  options.nonOptionArguments.asInstanceOf[java.util.List[String]].asScala.toList;
 		if (inputFiles.isEmpty) {
 			inputFiles = List[String](null)
 		}
@@ -76,7 +76,7 @@ object DGEStartup {
 //				val cluster = new UnionFindClustering[WeightedTagClassJ](
 //					F.converter(tagClass => jc.asJavaIterator(tagClass.isoforms.iterator)))
 		val cls = new ReadClassCompactAndClusterParameterRunnable[WeightedTagClassJ](
-			F.converter(tagClass => jc.asJavaIterator(tagClass.isoforms.iterator)),
+			F.converter(tagClass => tagClass.isoforms.toIterator.asJava.asInstanceOf[ju.Iterator[jl.Object]]),
 			F.binaryOperator((toBeRemoved, toBeKept) => {
 					toBeKept.multiplicity += toBeRemoved.multiplicity;
 					null.asInstanceOf[jl.Void]}))
@@ -110,11 +110,11 @@ object DGEStartup {
 						println("Parsing tags from " + file + "... ")
 
 					val inputReader = new BufferedReader(
-						if (file != null) new FileReader(file)
+						if (file != null) new java.io.FileReader(file)
 						else new InputStreamReader(System .in), BUFF_SIZE);
 													 
-					if (file == null || getExtension(file).toLowerCase == ".fastq") {
-						new ThreadPooledFastqParser(nThreads, 0x1000, 0x10000, factory).parse(inputReader)
+					if (file == null || getExtension(file).toLowerCase == ".fastq" || getExtension(file).toLowerCase == ".fq") {
+					  new ThreadPooledFastqParser(nThreads, 0x1000, 0x10000, factory).parse(inputReader)
 					} else {
 						new ThreadPooledFastrParser(nThreads, 0x1000, 0x10000, factory).parse(inputReader)
 					}
@@ -143,20 +143,20 @@ object DGEStartup {
 
 		val tagClusters = clusterProcess.waitForTermination;
 		debug(()=>"Done clustering. Clusters " + tagClusters.size);
-		debug(()=>"Largest cluster " + jc.asScalaIterable(tagClusters).foldLeft(0)((m, l) => math.max(m, l.size)))
-		debug(()=>"Tags in clusters " + jc.asScalaIterable(tagClusters)
+		debug(()=>"Largest cluster " + tagClusters.asScala.foldLeft(0)((m, l) => math.max(m, l.size)))
+		debug(()=>"Tags in clusters " + tagClusters.asScala
 				.foldLeft(0)((c, l) => c + l.size))
-		println(()=>"Tags: " + jc.asScalaIterable(tagClusters)
-				.foldLeft(0)((c, l) => c + jc.asScalaIterable(l).foldLeft(0)((s, t) => s + t.multiplicity)))
+		println(()=>"Tags: " + tagClusters.asScala
+				.foldLeft(0)((c, l) => c + l.asScala.foldLeft(0)((s, t) => s + t.multiplicity)))
 
 		var tags = Utils.flatten(tagClusters)
 		if (runUniq) {
 			debug(()=>"Uniq tag classes " + tags.size)
-			println("Uniq tags: " + jc.asScalaIterable(tags).foldLeft(0)((s, t) => s + t.multiplicity))
+			println("Uniq tags: " + tags.asScala.foldLeft(0)((s, t) => s + t.multiplicity))
 		}
 		var freq: ju.Map[jl.String, jl.Double] = if (runUniq) {
 			val map = new ju.HashMap[jl.String, jl.Double]
-			for (t <- jc.asScalaIterable(tags);
+			for (t <- tags.asScala;
 				 gene = isoformToClusterMap.get(t.isoforms(0))) {
 				val count = if (map.containsKey(gene)) map.get(gene).doubleValue
 				else 0.0
@@ -209,15 +209,15 @@ object DGEStartup {
 
 		 //				val tagClusters = clusterProcess.waitForTermination;
 		 //				println("Done clustering. Clusters " + tagClusters.size);
-		 //				println("Largest cluster " + jc.asScalaIterable(tagClusters).foldLeft(0)((m, l) => math.max(m, l.size)))
-		 //				println("Tags in clusters " + jc.asScalaIterable(tagClusters)
+		 //				println("Largest cluster " + tagClusters.asScala.foldLeft(0)((m, l) => math.max(m, l.size)))
+		 //				println("Tags in clusters " + tagClusters.asScala
 		 //						.foldLeft(0)((c, l) => c + l.size))
-		 //				println("Tag multiplicity in clusters " + jc.asScalaIterable(tagClusters)
-		 //						.foldLeft(0)((c, l) => c + jc.asScalaIterable(l).foldLeft(0)((s, t) => s + t.multiplicity)))
+		 //				println("Tag multiplicity in clusters " + tagClusters.asScala
+		 //						.foldLeft(0)((c, l) => c + l.asScala.foldLeft(0)((s, t) => s + t.multiplicity)))
 
 
 		 println("Collapsed tags " + collapsedTags.size)
-		 println("Collapsed tag multiplicity " + jc.asScalaIterable(collapsedTags).
+		 println("Collapsed tag multiplicity " + collapsedTags.asScala.
 		 foldLeft(0)((s, t) => s + t.multiplicity))
 		 println("Running EM")
 
@@ -226,7 +226,7 @@ object DGEStartup {
 		 //				if (options.has(OP_UNIQ)) {
 		 //					tags = keepUniq(tags, isoformToClusterMap)
 		 //					println("Uniq tags " + tags.size)
-		 //					println("Uniq tag multiplicity " + jc.asScalaIterable(tags).foldLeft(0)((s, t) => s + t.multiplicity))
+		 //					println("Uniq tag multiplicity " + tags.asScala.foldLeft(0)((s, t) => s + t.multiplicity))
 		 //				}
 		 //				em.run(tags)
 		 //				em.run(uniq)
@@ -263,7 +263,7 @@ object DGEStartup {
 
 		 collapsedTags = keepUniq(collapsedTags, isoformToClusterMap)
 		 println("Uniq tags " + collapsedTags.size)
-		 println("Uniq tag multiplicity " + jc.asScalaIterable(collapsedTags).
+		 println("Uniq tag multiplicity " + collapsedTags.asScala.
 		 foldLeft(0)((s, t) => s + t.multiplicity))
 		 println("Running EM Uniq")
 		 em = new DGEEMParameterRunnable(p, isoforms, nrCleaveSitesJavaMap)
@@ -281,7 +281,7 @@ object DGEStartup {
 
 	def keepUniq(tags: jl.Iterable[WeightedTagClassJ], iso2Cluster: ju.Map[jl.String, jl.String]) = {
 		val filtered = new ju.ArrayList[WeightedTagClassJ]();
-		for (t <- jc.asScalaIterable(tags)) {
+		for (t <- tags.asScala) {
 			if (isUniq(t, iso2Cluster)) {
 				filtered.add(t);
 			}
